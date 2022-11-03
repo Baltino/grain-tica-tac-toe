@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import CellComponent from '../components/CellComponent';
 import Container from '../components/Container';
@@ -7,7 +7,7 @@ import { UserEnum, Users } from '../components/UsersForm';
 import { GameStatus } from './Game';
 
 type BoardContainerProps = {
-  users: Users,
+  users?: Users,
   gameStatus: string,
 };
 type BoardComponentProps = {
@@ -15,12 +15,23 @@ type BoardComponentProps = {
 }
 const Board = styled.div<BoardComponentProps>`
   background-color: #fafafa;
+  position: relative;
   opacity: ${({ disabled }) => disabled ? 0.7 : 1}
 `;
 const Row = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 2px;
+`;
+
+const DisabledMask = styled.div`
+  position: absolute;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 3;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 `;
 
 const initBoard = (size: number): Array<Array<UserEnum | undefined>> => {
@@ -43,10 +54,11 @@ const saveBoardData = (board: Array<Array<UserEnum | undefined>>, next: UserEnum
   localStorage.setItem(BOARD_LAST, next);
 }
 
-const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
+const BoardContainer = ({ gameStatus }: BoardContainerProps) => {
   const [size, setSize] = useState(3);
   const [board, setBoard] = useState(initBoard(size));
   const [last, setLast] = useState(UserEnum.circle);
+  const firstRender = useRef(false);
 
   const isBoardDisabled = gameStatus !== GameStatus.started;
 
@@ -73,6 +85,8 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
   
     if (board) setBoard(JSON.parse(board));
     if (last) setLast(last);  
+
+    firstRender.current = true;
   }, [])
 
   useEffect(() => {
@@ -86,7 +100,10 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
   }, [gameStatus]);
 
   useEffect(() => {
-    setBoard(initBoard(size));
+    // to avoid reset board on first render
+    if (!firstRender.current) {
+      setBoard(initBoard(size));
+    }
   }, [size])
 
   return (
@@ -101,6 +118,11 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
         />
       </Container>
       <Board disabled={isBoardDisabled}>
+        {isBoardDisabled && (
+          <DisabledMask>
+            Game is stopped
+          </DisabledMask>
+        )}
         {board.map((row, indexRow) => (
           <Row key={indexRow}>
             {row.map((cell, indexCol) => <CellComponent key={`${indexCol}-cell`} value={cell} onClick={handleClick(indexRow, indexCol)} />)}
