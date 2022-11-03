@@ -38,6 +38,29 @@ Your app is ready to be deployed!
 #### Maxi Aragon ####
 I'm going to write the decisions made along the challenge.
 
-- I would like to add the linter and formatters first.
-- Installed typescript
+I would like to add the linter and formatters first.
+Installed typescript
+
+Without specifications, the first playable mode that comes to mind is that each player has his turn to select a spot with the click of a mouse.
+So, to make it clear for the users the app should require both players name to show who should be next (and properly show later who wins!)
+
+Regarding the styling, I tried to keep it simple with styled-components. I didn't want to add another library
+
+I usually work with Redux, but I didnt find a scenario where it should be used (adds several new files)
+
+I tried to keep most solutions based on the fact that there will be only 2 players
+
+If the render of each cell is timeconsuming, I would've implemented a solution to avoid re-rending each time the board changes.
+Maybe using redux and extracting the board as an object.    
+
+
+I usually try to separate dummy components from containers (the ones that access the data), but for this challenge I loose this approach a little bit.
+
+
+### Next steps
+I invested a few hours into this challenge, there are several things I've been thinking in adding, but it doesn't look like is the real purpose of this challenge.
+Some tasks still needed here are:
+- Add unit tests and components
+- Add a small algorithm to check the winner
+- More UX stuff.
 
