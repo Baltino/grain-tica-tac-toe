@@ -86,7 +86,6 @@ const BoardContainer = ({ gameStatus }: BoardContainerProps) => {
     if (board) setBoard(JSON.parse(board));
     if (last) setLast(last);  
 
-    firstRender.current = true;
   }, [])
 
   useEffect(() => {
@@ -101,8 +100,10 @@ const BoardContainer = ({ gameStatus }: BoardContainerProps) => {
 
   useEffect(() => {
     // to avoid reset board on first render
-    if (!firstRender.current) {
+    if (firstRender.current) {
       setBoard(initBoard(size));
+    }else {
+      firstRender.current = true;
     }
   }, [size])
 

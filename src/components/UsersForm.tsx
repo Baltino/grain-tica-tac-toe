@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GameStatus } from '../containers/Game';
+import AlertText, { AlertTextTypes } from './AlertText';
 import Button from './Button';
 import InputComponent from './TextField';
 
@@ -21,11 +22,7 @@ export enum UserEnum {
   cross = 'cross'
 }
 
-const Container = styled.div`
-
-`;
-
-
+const Container = styled.div``;
 const INITIAL_STATE = { cross: '', circle: '' };
 
 const UsersFormComponent = ({
@@ -56,8 +53,8 @@ const UsersFormComponent = ({
           Reset game
         </Button>
       </div>
-      {gameStatus === GameStatus.started && <p>Play!</p>}
-      {gameStatus === GameStatus.errorNames && <p>Please complete the user names to proceed.</p>}
+      {gameStatus === GameStatus.started && <AlertText type={AlertTextTypes.success}>Play!</AlertText>}
+      {gameStatus === GameStatus.errorNames && <AlertText type={AlertTextTypes.error}>Please complete the user names to proceed.</AlertText>}
     </Container>
   );
 }
