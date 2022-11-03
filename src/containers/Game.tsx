@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import UsersFormComponent, { Users } from '../components/UsersForm';
+import BoardContainer from './Board';
 
 const GameContainer = () => {
   const [users, setUsers] = useState({});
@@ -17,7 +18,7 @@ const GameContainer = () => {
   return (
     <>
       <UsersFormComponent onSubmitNames={handleSubmitNames} submitStatus={submitUsersStatus} />
-      
+      <BoardContainer users={users} gameStatus={'init'} />
     </>
   )
 }
