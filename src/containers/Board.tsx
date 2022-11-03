@@ -1,6 +1,7 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CellComponent from '../components/CellComponent';
+import TextFieldComponent from '../components/TextField';
 import { UserEnum, Users } from '../components/UsersForm';
 import { GameStatus } from './Game';
 
@@ -62,7 +63,7 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
     saveBoardData(newBoard, next);
   };
 
-  
+  const handleSizeChange = (value: string) => setSize(parseInt(value));  
 
   useEffect(() => {
     //when mount, let's get what is in local storage.
@@ -78,19 +79,26 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
       const initialBoard = initBoard(size);
       setBoard(initialBoard);
       setLast(UserEnum.circle);
-      
+
       saveBoardData(initialBoard, UserEnum.circle);
     }
   }, [gameStatus]);
 
+  useEffect(() => {
+    setBoard(initBoard(size));
+  }, [size])
+
   return (
-    <Board disabled={isBoardDisabled}>
-      {board.map((row, indexRow) => (
-        <Row key={indexRow}>
-          {row.map((cell, indexCol) => <CellComponent key={`${indexCol}-cell`} value={cell} onClick={handleClick(indexRow, indexCol)} />)}
-        </Row>
-      ))}
-    </Board>
+    <div>
+      <TextFieldComponent label='Size' type='number' value={`${size}`} onChange={handleSizeChange} />
+      <Board disabled={isBoardDisabled}>
+        {board.map((row, indexRow) => (
+          <Row key={indexRow}>
+            {row.map((cell, indexCol) => <CellComponent key={`${indexCol}-cell`} value={cell} onClick={handleClick(indexRow, indexCol)} />)}
+          </Row>
+        ))}
+      </Board>
+    </div>
   )
 }
 

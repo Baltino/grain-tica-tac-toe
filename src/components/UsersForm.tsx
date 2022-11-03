@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GameStatus } from '../containers/Game';
 import Button from './Button';

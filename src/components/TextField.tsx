@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, ReactElement } from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
 const Input = styled.input`
