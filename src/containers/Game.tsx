@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Container from '../components/Container';
 import UsersFormComponent, { Users } from '../components/UsersForm';
 import BoardContainer from './Board';
 
@@ -40,7 +41,7 @@ const GameContainer = () => {
 
 
   return (
-    <>
+    <Container direction="column" align="center">
       <UsersFormComponent
         preloaded={users}
         onSubmitNames={handleSubmitNames}
@@ -48,7 +49,7 @@ const GameContainer = () => {
         onResetBoard={handleReset}  
       />
       <BoardContainer users={users} gameStatus={gameStatus} />
-    </>
+    </Container>
   )
 }
 

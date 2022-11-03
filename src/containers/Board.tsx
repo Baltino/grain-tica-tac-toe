@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CellComponent from '../components/CellComponent';
+import Container from '../components/Container';
 import TextFieldComponent from '../components/TextField';
 import { UserEnum, Users } from '../components/UsersForm';
 import { GameStatus } from './Game';
@@ -89,8 +90,16 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
   }, [size])
 
   return (
-    <div>
-      <TextFieldComponent label='Size' type='number' value={`${size}`} onChange={handleSizeChange} />
+    <Container width='100%' direction='column' align='center'>
+      <Container width='100%'>
+        <TextFieldComponent
+          label='Size'
+          type='number'
+          value={`${size}`}
+          onChange={handleSizeChange}
+          style={{ width: '100%' }}
+        />
+      </Container>
       <Board disabled={isBoardDisabled}>
         {board.map((row, indexRow) => (
           <Row key={indexRow}>
@@ -98,7 +107,7 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
           </Row>
         ))}
       </Board>
-    </div>
+    </Container>
   )
 }
 

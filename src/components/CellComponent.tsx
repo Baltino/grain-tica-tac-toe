@@ -9,6 +9,13 @@ const Cell = styled.div`
   display: inline-block;
   margin: 0 1px;
   cursor: pointer;
+  line-height: 40px;
+  text-align: center;
+  font-weight: bold;
+  &:hover {
+    background-color: #33d994;
+    transition: background-color ease-in 0.3s;
+  }
 `
 
 type CellComponentProps = {
