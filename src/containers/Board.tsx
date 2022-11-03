@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CellComponent from '../components/CellComponent';
 import { UserEnum, Users } from '../components/UsersForm';
@@ -31,6 +31,9 @@ const initBoard = (size: number): Array<Array<UserEnum | undefined>> => {
   return board;
 }
 
+const BOARD_KEY = 'BOARD_KEY';
+const BOARD_LAST = 'BOARD_LAST';
+
 const getNextPlayer = (last: UserEnum) => last === UserEnum.cross ? UserEnum.circle : UserEnum.cross;
 
 const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
@@ -45,12 +48,24 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
     // we dont allow edition
     if (board[row][col] || isBoardDisabled) return;
     
-    setBoard((state) => {
-      state[row][col] = next;
-      return [ ...state ]
-    });
+    const newBoard = [ ...board ];
+    newBoard[row][col] = next;
+    
+    setBoard(newBoard);
     setLast(next);
+    // saving data
+    localStorage.setItem(BOARD_KEY, JSON.stringify(newBoard));
+    localStorage.setItem(BOARD_LAST, next);
   };
+
+  useEffect(() => {
+    //when mount, let's get what is in local storage.
+    const board = localStorage.getItem(BOARD_KEY);
+    const last = localStorage.getItem(BOARD_LAST) as UserEnum;
+  
+    if (board) setBoard(JSON.parse(board));
+    if (last) setLast(last);  
+  }, [])
 
   return (
     <Board disabled={isBoardDisabled}>
