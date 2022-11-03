@@ -5,7 +5,7 @@
 html {
   height: 100%;
   background: #fafafa; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #fafafa, #2a0845); /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to left, #fafafa, #f3f3f3); /* Chrome 10-25, Safari 5.1-6 */
 }
 
 body {
