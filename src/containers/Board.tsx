@@ -36,6 +36,11 @@ const BOARD_LAST = 'BOARD_LAST';
 
 const getNextPlayer = (last: UserEnum) => last === UserEnum.cross ? UserEnum.circle : UserEnum.cross;
 
+const saveBoardData = (board: Array<Array<UserEnum | undefined>>, next: UserEnum) => {
+  localStorage.setItem(BOARD_KEY, JSON.stringify(board));
+  localStorage.setItem(BOARD_LAST, next);
+}
+
 const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
   const [size, setSize] = useState(3);
   const [board, setBoard] = useState(initBoard(size));
@@ -50,13 +55,14 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
     
     const newBoard = [ ...board ];
     newBoard[row][col] = next;
-    
+
     setBoard(newBoard);
     setLast(next);
     // saving data
-    localStorage.setItem(BOARD_KEY, JSON.stringify(newBoard));
-    localStorage.setItem(BOARD_LAST, next);
+    saveBoardData(newBoard, next);
   };
+
+  
 
   useEffect(() => {
     //when mount, let's get what is in local storage.
@@ -66,6 +72,16 @@ const BoardContainer = ({ users, gameStatus }: BoardContainerProps) => {
     if (board) setBoard(JSON.parse(board));
     if (last) setLast(last);  
   }, [])
+
+  useEffect(() => {
+    if (gameStatus === GameStatus.reseted) {
+      const initialBoard = initBoard(size);
+      setBoard(initialBoard);
+      setLast(UserEnum.circle);
+      
+      saveBoardData(initialBoard, UserEnum.circle);
+    }
+  }, [gameStatus]);
 
   return (
     <Board disabled={isBoardDisabled}>

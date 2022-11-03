@@ -6,6 +6,7 @@ export enum GameStatus {
   initial = 'initial',
   errorNames = 'errorNames',
   started = 'started',
+  reseted = 'reseted',
   finished = 'finished'
 }
 const USERS_KEY = 'USERS_KEY';
@@ -25,6 +26,10 @@ const GameContainer = () => {
     }
   }
 
+  const handleReset = () => {
+    setGameStatus(GameStatus.reseted);
+  }
+
   useEffect(() => {
     const users = localStorage.getItem(USERS_KEY);
     if (users) {
@@ -36,7 +41,12 @@ const GameContainer = () => {
 
   return (
     <>
-      <UsersFormComponent preloaded={users} onSubmitNames={handleSubmitNames} gameStatus={gameStatus} />
+      <UsersFormComponent
+        preloaded={users}
+        onSubmitNames={handleSubmitNames}
+        gameStatus={gameStatus}
+        onResetBoard={handleReset}  
+      />
       <BoardContainer users={users} gameStatus={gameStatus} />
     </>
   )

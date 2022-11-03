@@ -4,12 +4,6 @@ import { GameStatus } from '../containers/Game';
 import Button from './Button';
 import InputComponent from './TextField';
 
-const Footer = styled.footer`
-  text-align: center;
-  color: #00b96c;
-  border-top: 1px solid black;
-`;
-
 export type Users = {
   cross: string,
   circle: string,
@@ -18,6 +12,7 @@ export type Users = {
 type UsersFormProps = {
   preloaded: Users,
   onSubmitNames: { (usersObj: any ): void },
+  onResetBoard: { (): void },
   gameStatus: string
 }
 
@@ -33,6 +28,7 @@ const UsersFormComponent = ({
   preloaded,
   onSubmitNames,
   gameStatus,
+  onResetBoard,
 }: UsersFormProps): ReactElement => {
   const [users, setUsers] = useState<Users>(INITIAL_STATE);
 
@@ -48,9 +44,15 @@ const UsersFormComponent = ({
       <p>Please enter your names! (at least 4 chars long)</p>
       <InputComponent label={'User O'} value={users.circle} onChange={handleChangeUserName(UserEnum.circle)} />
       <InputComponent label={'User X'} value={users.cross} onChange={handleChangeUserName(UserEnum.cross)} />
-      <Button onClick={() => onSubmitNames(users)}>
-        Continue
-      </Button>
+      <div>
+        <Button onClick={() => onSubmitNames(users)}>
+          Continue
+        </Button>
+        <Button onClick={onResetBoard}>
+          Reset game
+        </Button>
+      </div>
+      {gameStatus === GameStatus.started && <p>Play!</p>}
       {gameStatus === GameStatus.errorNames && <p>Please complete the user names to proceed.</p>}
     </div>
   );
