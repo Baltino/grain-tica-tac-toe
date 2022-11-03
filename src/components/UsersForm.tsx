@@ -1,5 +1,6 @@
 import React, { ChangeEvent, ChangeEventHandler, ReactElement, useState } from 'react';
 import styled from 'styled-components';
+import { GameStatus } from '../containers/Game';
 import Button from './Button';
 import InputComponent from './TextField';
 
@@ -11,7 +12,7 @@ const Footer = styled.footer`
 
 type UsersFormProps = {
   onSubmitNames: { (usersObj: any ): void },
-  submitStatus: string
+  gameStatus: string
 }
 
 export enum UserEnum {
@@ -28,7 +29,7 @@ const INITIAL_STATE = { cross: '', circle: '' };
 
 const UsersFormComponent = ({
   onSubmitNames,
-  submitStatus,
+  gameStatus,
 }: UsersFormProps): ReactElement => {
   const [users, setUsers] = useState(INITIAL_STATE);
 
@@ -36,14 +37,15 @@ const UsersFormComponent = ({
     (value: string) => setUsers((state) => ({ ...state, [name]: value }));
 
   return (
-    <form>
+    <div>
       <p>Please enter your names!</p>
       <InputComponent label={'User O'} value={users.circle} onChange={handleChangeUserName(UserEnum.circle)} />
       <InputComponent label={'User X'} value={users.cross} onChange={handleChangeUserName(UserEnum.cross)} />
-      <Button type="submit" onClick={onSubmitNames}>
+      <Button onClick={() => onSubmitNames(users)}>
         Continue
       </Button>
-    </form>
+      {gameStatus === GameStatus.errorNames && <p>Please complete the user names to proceed.</p>}
+    </div>
   );
 }
 

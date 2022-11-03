@@ -8,6 +8,7 @@ const Cell = styled.div`
   border: 1px solid black;
   display: inline-block;
   margin: 0 1px;
+  cursor: pointer;
 `
 
 type CellComponentProps = {
